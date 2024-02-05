@@ -28,13 +28,6 @@ class Test(commands.Cog):
     @commands.command()
     async def yawetag(self, ctx):
         await ctx.send(f"YAWETAG!")
-
-    @commands.command()
-    async def players(self, ctx):
-        print("Sending request for players")
-        response = requests.get('http://127.0.0.1:8000/players')
-        await ctx.send("Got response!")
-
 ###############################################################################
 
 async def setup(bot):
