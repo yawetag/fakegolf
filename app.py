@@ -1,6 +1,7 @@
 import asyncio
 import colorama
 import discord
+import os
 
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -15,33 +16,34 @@ colorama.init()
 ##### DISCORD BOT SETUP #######################################################
 TOKEN = keys.discord_token
 intents = discord.Intents.all()
+intents.members = True
 intents.message_content = True
-activity = discord.Activity(type=discord.ActivityType.watching, name="Fake Golf")
-bot = Bot(command_prefix="!", case_insensitive=True, intents=intents, activity=activity)
+bot = Bot(command_prefix="!", case_insensitive=True, intents=intents)
 ###############################################################################
 
 ##### FASTAPI SETUP ###########################################################
 app = FastAPI()
 ###############################################################################
 
-##### FASTAPI FUNCTIONS #######################################################
-@app.get("/")
-async def hello_world():
-    return {"hello" : "world"}
-###############################################################################
-
 ##### DISCORD FUNCTIONS #######################################################
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user} running with FastAPI!")
+    for filename in os.listdir('fg_discord'):
+        if filename.endswith('.py'):
+            print(f"Loading fg_discord.{filename[:-3]}")
+            await bot.load_extension(f'fg_discord.{filename[:-3]}')
+###############################################################################S
 
-@bot.command()
-async def welcome(ctx: commands.Context, member: discord.Member):
-    await ctx.send(f"Welcome to {ctx.guild.name}, {member.mention}!")
+##### FASTAPI FUNCTIONS #######################################################
+@app.get("/")
+async def hello_world():
+    return {"hello" : "world"}
 
-@bot.command()
-async def yawetag(ctx):
-    await ctx.send(f"YAWETAG!")
+@app.get("/players")
+async def all_players():
+    print("Got request for players.")
+    return {'playerID' : 1, 'playerName' : 'yawetag'}
 ###############################################################################
 
 ##### INITIAL LOADING #########################################################
