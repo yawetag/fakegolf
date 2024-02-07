@@ -19,7 +19,8 @@ TOKEN = keys.discord_token
 intents = discord.Intents.all()
 intents.members = True
 intents.message_content = True
-bot = Bot(command_prefix="!", case_insensitive=True, intents=intents)
+activity = discord.Activity(type=discord.ActivityType.playing, name="Fake Golf")
+bot = Bot(command_prefix="!", case_insensitive=True, intents=intents, activity=activity)
 ###############################################################################
 
 ##### FASTAPI SETUP ###########################################################
