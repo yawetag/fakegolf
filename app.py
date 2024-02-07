@@ -2,6 +2,7 @@ import asyncio
 import colorama
 import discord
 import os
+import requests
 
 from discord.ext import commands
 from discord.ext.commands import Bot
