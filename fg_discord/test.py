@@ -3,6 +3,7 @@ import discord
 import requests
 
 from discord.ext import commands
+from fg_discord.fg_errors import error_notify
 
 ##### DISCORD FUNCTIONS #######################################################
 class Test(commands.Cog):
@@ -31,10 +32,9 @@ class Test(commands.Cog):
         await ctx.send(f"YAWETAG!")
     
     @commands.command()
-    async def players(self, ctx):
-        url = 'http://127.0.0.1:8000/players'
-        x = await asyncio.to_thread(requests.get, url)
-        await ctx.send(f"players: {x.text}")
+    async def test_error(self, ctx):
+        await error_notify(ctx, "players.join", "PLAYER002")
+
 ###############################################################################
 
 async def setup(bot):
