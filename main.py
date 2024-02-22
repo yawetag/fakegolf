@@ -19,6 +19,14 @@ bot = Bot(command_prefix="-", case_insensitive=True, intents=intents, activity=a
 ###############################################################################
 
 ##### DISCORD FUNCTIONS #######################################################
+@bot.command()
+@commands.has_role(keys.admin_role)
+async def reload(ctx, extension):
+    """Reloads the given bot module"""
+    await bot.unload_extension(f"fg_discord.{extension}")
+    await bot.load_extension(f"fg_discord.{extension}")
+    await ctx.message.add_reaction('👍')
+
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user} in the following servers:")
