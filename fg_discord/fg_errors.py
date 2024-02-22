@@ -26,15 +26,6 @@ async def error_notify(ctx, command, code):
     
     await send_error(ctx, message)
 
-async def send_user(ctx, message):
-    """Sends discord private message to user."""
-    await ctx.author.send(f"{ctx.author.mention} : {message}")
-
-async def send_channel(ctx, message):
-    """Sends discord message to channel."""
-    await ctx.send(f"{ctx.author.mention} : {message}")
-
-
 ##### DISCORD FUNCTIONS #######################################################
 class Errors(commands.Cog):
     def __init__(self, bot):

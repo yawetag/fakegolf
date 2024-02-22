@@ -14,26 +14,28 @@ class Players(commands.Cog):
         self.bot = bot
     
     def add_user(self, ctx):
-        # add user to database
-        user = db.add_user_by_discord_id(ctx)
-        if user:
+        """Adds new user to the database."""
+        user = db.add_user_by_discord_id(ctx)   # Add user to database
+        if user:            # If user was added successfully, return id
             return user
-        else:
+        else:               # If not, return an error
             return 0
 
     def is_user(self, ctx):
-        # check database for user by discord snowflake
-        user = db.get_user_by_discord_id(ctx.author.id)
-        if len(user) == 0:
+        """Checks database to see if user is active."""
+        user = db.get_user_by_discord_id(ctx.author.id)     # Get user from database
+        if len(user) == 0:      # If no user was found, return None
             return None
-        elif len(user) == 1:
+        elif len(user) == 1:    # If user was found, return their info
             return user[0]
-        else:
+        else:                   # All other cases, return an error
             return 0
     
-    @commands.command()
+    @commands.command(
+            brief="Join Fake Golf as a user.",
+            description="-join\nJoin Fake Golf as a user."
+    )
     async def join(self, ctx):
-        """Joins the game as a user."""
         user = Players.is_user(self, ctx)
         if user is None:
             add_user = Players.add_user(self, ctx)

@@ -33,6 +33,7 @@ def db_read(q, v):
 
 ##### USER QUERIES ############################################################
 def add_user_by_discord_id(ctx):
+    """Adds new user to users table with their discord snowflake."""
     player_name = ctx.author.name
     snowflake = ctx.author.id
 
@@ -43,6 +44,7 @@ def add_user_by_discord_id(ctx):
     return response
 
 def get_user_by_discord_id(snowflake):
+    """Gets user information with their discord snowflake."""
     query = f"SELECT * FROM users WHERE discord_snowflake=%s;"
     variables = (snowflake)
     response = db_read(query, variables)
