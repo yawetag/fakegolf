@@ -17,8 +17,6 @@ async def send_user(ctx, message):
     """Sends discord private message to user."""
     await ctx.author.send(f"{ctx.author.mention} : {message}")
 
-
-
 ##### DISCORD FUNCTIONS #######################################################
 class Messages(commands.Cog):
     def __init__(self, bot):
