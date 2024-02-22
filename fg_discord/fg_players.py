@@ -15,12 +15,16 @@ class Players(commands.Cog):
     
     def add_user(self, ctx):
         # add user to database
-        return 1
+        user = db.add_user_by_discord_id(ctx)
+        if user:
+            return user
+        else:
+            return 0
 
     def is_user(self, ctx):
         # check database for user by discord snowflake
         user = db.get_user_by_discord_id(ctx.author.id)
-        if user is None:
+        if len(user) == 0:
             return None
         elif len(user) == 1:
             return user[0]
@@ -32,7 +36,12 @@ class Players(commands.Cog):
         """Joins the game as a user."""
         user = Players.is_user(self, ctx)
         if user is None:
-            message = "Welcome to the game!"
+            add_user = Players.add_user(self, ctx)
+            if add_user == 0:
+                error_notify(ctx, "players.join", "PLAYER001")
+                message = "There has been an error in your command. Admins will look into it and contact you."
+            else:
+                message = "Welcome to the game! Type `-info` to view your player info."
         elif user == 2:
             error_notify(ctx, "players.join", "PLAYER001")
             message = "There has been an error in your command. Admins will look into it and contact you."

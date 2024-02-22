@@ -11,7 +11,8 @@ ERROR_CHAN = keys.error_chan
 ERROR_WEBHOOK = keys.error_webhook
 
 ERROR_CODES = {
-    'PLAYER001' : {'message' : 'Multiple matches on Discord Snowflake.'}
+    'PLAYER001' : {'message' : 'Multiple matches on Discord Snowflake.'},
+    'PLAYER002' : {'message' : 'Error in adding user to database.'},
 }
 ###############################################################################
 
