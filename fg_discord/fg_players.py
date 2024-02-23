@@ -30,7 +30,21 @@ class Players(commands.Cog):
             return user[0]
         else:                   # All other cases, return an error
             return 0
-    
+    @commands.command(
+            brief="See your user info.",
+            description="-info\nSee your Fake Golf user info."
+    )
+    async def info(self, ctx):
+        user = Players.is_user(self, ctx)
+        if user is None:
+            message = "You have not joined. Type `-join` to join Fake Golf."
+        elif user == 2:
+            error_notify(ctx, "players.info", "PLAYER001")        
+            message = "There has been an error in your command. Admins will look into it and contact you."
+        else:
+            message = f"Your player name is: {user['player_name']}\nTo change it, type `-name <new name>`."
+        await send_channel(ctx, message)
+
     @commands.command(
             brief="Join Fake Golf as a user.",
             description="-join\nJoin Fake Golf as a user."
