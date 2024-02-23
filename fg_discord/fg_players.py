@@ -20,6 +20,19 @@ class Players(commands.Cog):
             return user
         else:               # If not, return an error
             return 0
+    
+    def change_name(self, ctx, new_name):
+        """Changes name of user in the database. Name must be less than 40 characters."""
+        if len(new_name) < 1:
+            return 0
+        elif len(new_name) > 40:
+            return 40
+        
+        user = db.change_name_by_discord_id(ctx, new_name)  # Change user in database
+        if user:
+            return 1
+        else:
+            return 2
 
     def is_user(self, ctx):
         """Checks database to see if user is active."""
@@ -64,6 +77,30 @@ class Players(commands.Cog):
         else:
             message = "You have already joined the game. Type `-info` to view your player info."
         await send_channel(ctx, message)
+    
+    @commands.command(
+            brief="Change your player name.",
+            description="-name <new name>\nChanges your player name to <new name>.\nName must be less than 40 characters."
+    )
+    async def name(self, ctx, *, player_name=""):
+        user = Players.is_user(self, ctx)
+        if user is None:
+            message = "You have not joined. Type `-join` to join Fake Golf."
+        elif user == 2:
+            error_notify(ctx, "players.name", "PLAYER001")
+            message = "There has been an error in your command. Admins will look into it and contact you."
+        else:
+            name = Players.change_name(self, ctx, player_name)
+            if name == 0:
+                message = "You must enter a new name: `-name <new name>`"
+            elif name == 40:
+                message = "Your new name cannot be longer than 40 characters."
+            elif name == 2:
+                error_notify(ctx, "players.name", "PLAYER003")
+                message = "There has been an error in your command. Admins will look into it and contact you."
+            else:
+                message = f"Your name has been changed to: {player_name}"
+            await send_channel(ctx, message)
 ###############################################################################
 
 async def setup(bot):
