@@ -19,7 +19,9 @@ bot = Bot(command_prefix="-", case_insensitive=True, intents=intents, activity=a
 ###############################################################################
 
 ##### DISCORD FUNCTIONS #######################################################
-@bot.command()
+@bot.command(
+        hidden=True
+)
 @commands.has_role(keys.admin_role)
 async def reload(ctx, extension):
     """Reloads the given bot module"""

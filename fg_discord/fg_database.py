@@ -22,9 +22,12 @@ def db_create(q, v):
 
     return response
 
-def db_read(q, v):
+def db_read(q, v=None):
     cur = CONNECTION.cursor()
-    cur.execute(q, v)
+    if v is not None:
+        cur.execute(q, v)
+    else:
+        cur.execute(q)
     response = cur.fetchall()
     cur.close()
 
@@ -37,6 +40,16 @@ def db_update(q, v):
     cur.close()
 
     return response
+###############################################################################
+
+##### COURSES QUERIES #########################################################
+##### Read ####################################################################
+def get_all_courses():
+    query = "SELECT * FROM courses c LEFT JOIN users u ON c.designer = u.id;"
+    response = db_read(query)
+    
+    return response
+###############################################################################
 ###############################################################################
 
 ##### USER QUERIES ############################################################

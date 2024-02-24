@@ -11,6 +11,7 @@ ERROR_CHAN = keys.error_chan
 ERROR_WEBHOOK = keys.error_webhook
 
 ERROR_CODES = {
+    'COURSES001' : {'message' : 'Database returned no courses.'},
     'PLAYER001' : {'message' : 'Multiple matches on Discord Snowflake.'},
     'PLAYER002' : {'message' : 'Error in adding user to database.'},
     'PLAYER003' : {'message' : 'Error in changing player_name in database.'}
