@@ -32,7 +32,8 @@ class Courses(commands.Cog):
         else:
             message = f"Here is a list of courses:\n"
             for c in courses:
-                message += f"1. {c['course_name']} by {c['player_name']}. Par {c['par']}. {c['yardage']:,} yards.\n"
+                message += f"   (#{c['id']}) **{c['course_name']}** by {c['player_name']}. Par {c['par']}. {c['yardage']:,} yards.\n"
+        message += "\nFor more information on a course, type `-course_info <#>`, where `<#>` is the course number."
 
         await send_channel(ctx, message)
 

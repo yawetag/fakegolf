@@ -45,7 +45,17 @@ def db_update(q, v):
 ##### COURSES QUERIES #########################################################
 ##### Read ####################################################################
 def get_all_courses():
-    query = "SELECT * FROM courses c LEFT JOIN users u ON c.designer = u.id;"
+    query = "SELECT c.id, c.course_name, u.player_name, c.par, c.yardage FROM courses c LEFT JOIN users u ON c.designer_id = u.id;"
+    response = db_read(query)
+    
+    return response
+###############################################################################
+###############################################################################
+
+##### TOURNAMENTS QUERIES #####################################################
+##### Read ####################################################################
+def get_all_tournaments():
+    query = "SELECT t.id, t.tournament_name, u.player_name, COUNT(*) AS 'rounds' FROM tournaments t LEFT JOIN users u ON t.designer_id = u.id LEFT JOIN tournament_rounds tr ON tr.tournament_id=t.id;"
     response = db_read(query)
     
     return response
