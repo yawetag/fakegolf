@@ -20,6 +20,14 @@ class Tournaments(commands.Cog):
         else:
             return tournaments
     
+    def info_tournament(self, tid):
+        """Gets information about a tournament."""
+        tournaments = db.get_tournament_info(tid)
+        if tournaments is None:
+            return 0
+        else:
+            return tournaments
+    
     @commands.command(
             brief="See list of tournaments.",
             description="-tournaments\nSee list of tournaments in Fake Golf."
@@ -38,6 +46,23 @@ class Tournaments(commands.Cog):
 
         await send_channel(ctx, message)
 
+    @commands.command(
+        brief="See detail of tournament.",
+        description="-tournament_info <number>\nSee details of tournament by number."
+    )
+    async def tournament_info(self, ctx, tournament_id=0):
+        tournament = Tournaments.info_tournament(self, tournament_id)
+        if tournament == 0:
+            await error_notify(ctx, "tournaments.tournament_info", "TOURNAMENTS001")
+            message = "There has been an error in your command. Admins will look into it and contact you."
+        elif len(tournament) == 0:
+            message = "There are no tournaments matching that id. Please type `-tournaments` to see all active tournaments."
+        else:
+            message = f"Here is information on **{tournament[0]['tournament_name']}** by {tournament[0]['player_name']}:\n"
+            for t in tournament:
+                message += f"   Round {t['round']}: **{t['course_name']}** (par: {t['par']}. yards: {t['yardage']:,})\n"
+            message += f"To join the tournament, type `-join_tournament {tournament_id}`"
+        await send_channel(ctx, message)
 ###############################################################################
 
 async def setup(bot):

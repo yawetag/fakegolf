@@ -43,6 +43,7 @@ class Players(commands.Cog):
             return user[0]
         else:                   # All other cases, return an error
             return 0
+
     @commands.command(
             brief="See your user info.",
             description="-info\nSee your Fake Golf user info."

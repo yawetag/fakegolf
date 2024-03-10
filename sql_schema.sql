@@ -152,7 +152,7 @@ CREATE TABLE tournament_targets (
     updated_on              TIMESTAMP   NOT NULL DEFAULT NOW() ON UPDATE NOW()
 );
 
---- Locations Values
+--- Locations Lookup Values
 INSERT INTO locations_lookup (id, location_name, modifier_name, special, icon) VALUES
     (1, "In the hole", NULL, NULL, "hole"),
     (2, "Green", "Close", NULL, "green"),
@@ -176,6 +176,14 @@ INSERT INTO locations_lookup (id, location_name, modifier_name, special, icon) V
     (20, "Out of Bounds", NULL, "oob", "oob"),
     (21, "Water", NULL, "water", "water"),
     (22, "Tee Box", NULL, NULL, "tee")
+;
+
+--- Status Lookup Values
+INSERT INTO status_lookup (id, status_name) VALUES
+    (1, "Setting Up"),
+    (2, "Active"),
+    (3, "Completed"),
+    (4, "Canceled")
 ;
 
 --- Icon links
