@@ -13,7 +13,7 @@ class Courses(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    def get_courses(self):
+    def c_get_courses(self):
         courses = db.get_all_courses()  # Get list of courses
         if courses is None:
             return 0
@@ -22,10 +22,11 @@ class Courses(commands.Cog):
     
     @commands.command(
             brief="See list of courses.",
-            description="-courses\nSee list of courses in Fake Golf."
+            description="-courses\nSee list of courses in Fake Golf.",
+            aliases=['c_list']
     )
     async def courses(self, ctx):
-        courses = Courses.get_courses(self)
+        courses = Courses.c_get_courses(self)
         if courses == 0:
             await error_notify(ctx, "courses.courses", "COURSES001")
             message = "There has been an error in your command. Admins will look into it and contact you."

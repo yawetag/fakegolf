@@ -13,14 +13,14 @@ class Tournaments(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    def get_tournaments(self):
+    def t_get_tournaments(self):
         tournaments = db.get_all_tournaments()  # Get list of tournaments
         if tournaments is None:
             return 0
         else:
             return tournaments
     
-    def info_tournament(self, tid):
+    def t_tournament_info(self, tid):
         """Gets information about a tournament."""
         tournaments = db.get_tournament_info(tid)
         if tournaments is None:
@@ -30,10 +30,11 @@ class Tournaments(commands.Cog):
     
     @commands.command(
             brief="See list of tournaments.",
-            description="-tournaments\nSee list of tournaments in Fake Golf."
+            description="-tournaments\nSee list of tournaments in Fake Golf.",
+            aliases=['t_list']
     )
     async def tournaments(self, ctx):
-        tournaments = Tournaments.get_tournaments(self)
+        tournaments = Tournaments.t_get_tournaments(self)
         if tournaments == 0:
             await error_notify(ctx, "tournaments.tournaments", "TOURNAMENTS001")
             message = "There has been an error in your command. Admins will look into it and contact you."
@@ -48,10 +49,11 @@ class Tournaments(commands.Cog):
 
     @commands.command(
         brief="See detail of tournament.",
-        description="-tournament_info <number>\nSee details of tournament by number."
+        description="-tournament_info <number>\nSee details of tournament by number.",
+        aliases=['t_info']
     )
     async def tournament_info(self, ctx, tournament_id=0):
-        tournament = Tournaments.info_tournament(self, tournament_id)
+        tournament = Tournaments.t_tournament_info(self, tournament_id)
         if tournament == 0:
             await error_notify(ctx, "tournaments.tournament_info", "TOURNAMENTS001")
             message = "There has been an error in your command. Admins will look into it and contact you."
