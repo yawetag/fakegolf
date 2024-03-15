@@ -20,6 +20,7 @@ CREATE TABLE locations_lookup (
 CREATE TABLE status_lookup (
     id          INT             NOT NULL PRIMARY KEY AUTO_INCREMENT,
     status_name VARCHAR(25)     NOT NULL,
+    description VARCHAR(500)    NOT NULL,
     created_on  TIMESTAMP       NOT NULL DEFAULT NOW(),
     updated_on  TIMESTAMP       NOT NULL DEFAULT NOW() ON UPDATE NOW()
 );
@@ -117,6 +118,10 @@ CREATE TABLE tournaments (
     tournament_name     VARCHAR(100)    NOT NULL,
     designer_id         INT NOT NULL,
     tournament_image    VARCHAR(500),
+    description         VARCHAR(500),
+    start_time          VARCHAR(25)     NOT NULL,
+    end_time            VARCHAR(25)     NOT NULL,
+    status_id           INT             NOT NULL,
     created_on          TIMESTAMP       NOT NULL DEFAULT NOW(),
     updated_on          TIMESTAMP       NOT NULL DEFAULT NOW() ON UPDATE NOW()
 );
@@ -128,6 +133,8 @@ CREATE TABLE tournament_rounds (
     tournament_id   INT         NOT NULL,
     round           INT         NOT NULL,
     course_id       INT         NOT NULL,
+    start_time      VARCHAR(25) NOT NULL,
+    end_time        VARCHAR(25) NOT NULL,
     created_on      TIMESTAMP   NOT NULL DEFAULT NOW(),
     updated_on      TIMESTAMP   NOT NULL DEFAULT NOW() ON UPDATE NOW()
 );
@@ -147,7 +154,6 @@ CREATE TABLE tournament_targets (
     shot_7                  INT,
     shot_8                  INT,
     shot_9                  INT,
-    tournament_status_id    INT         NOT NULL,
     created_on              TIMESTAMP   NOT NULL DEFAULT NOW(),
     updated_on              TIMESTAMP   NOT NULL DEFAULT NOW() ON UPDATE NOW()
 );
@@ -179,11 +185,19 @@ INSERT INTO locations_lookup (id, location_name, modifier_name, special, icon) V
 ;
 
 --- Status Lookup Values
-INSERT INTO status_lookup (id, status_name) VALUES
-    (1, "Setting Up"),
-    (2, "Active"),
-    (3, "Completed"),
-    (4, "Canceled")
+INSERT INTO status_lookup (id, status_name, description) VALUES
+    --- Anything 1XX deals with pre-registration
+    --- Anything 2XX deals with registration
+        --- 20X to 24X is between opening of registration and closing of registration
+        --- 250X to 29X is between closing and starting of tournament
+    --- Anything 3XX deals with the playing of a tournament or round (after registration and before closing)
+    --- Anything 4XX deals with the closing of a tournament
+    (101, "Setting Up", "The tournament organizer is entering data about the tournament."),
+    (201, "Registration Open", "The tournament is open for registration."),
+    (251, "Registration Closed", "The tournament is closed for registration."),
+    (301, "Playing", "The tournament is being played."),
+    (401, "Completed", "The tournament is complete."),
+    (451, "Canceled", "The tournament was canceled.")
 ;
 
 --- Icon links
