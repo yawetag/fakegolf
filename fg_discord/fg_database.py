@@ -57,14 +57,26 @@ def get_all_courses():
 ##### Read ####################################################################
 def get_all_tournaments():
     """Gets list of all tournaments."""
-    query = "SELECT t.id, t.tournament_name, u.player_name, COUNT(*) AS 'rounds' FROM tournaments t LEFT JOIN users u ON t.designer_id = u.id LEFT JOIN tournament_rounds tr ON tr.tournament_id=t.id;"
+    query = '''
+        SELECT t.id, t.tournament_name, t.start_time, t.end_time, t.status_id, sl.status_name, u.player_name, COUNT(*) AS 'rounds'
+        FROM tournaments t
+        LEFT JOIN users u ON t.designer_id = u.id
+        LEFT JOIN tournament_rounds tr ON tr.tournament_id = t.id
+        LEFT JOIN status_lookup sl on t.status_id = sl.id;
+    '''
     response = db_read(query)
     
     return response
 
 def get_tournament_info(tid):
     """Gets list of rounds for a tournament."""
-    query = "SELECT t.tournament_name, u.player_name, tr.round, c.course_name, c.par, c.yardage FROM tournaments t LEFT JOIN users u ON t.designer_id = u.id LEFT JOIN tournament_rounds tr ON tr.course_id = t.id LEFT JOIN courses c ON tr.course_id = c.id WHERE t.id=%s;"
+    query = '''
+        SELECT t.tournament_name, u.player_name, t.description, tr.round, tr.start_time, tr.end_time, c.course_name, c.par, c.yardage
+        FROM tournaments t
+        LEFT JOIN users u ON t.designer_id = u.id
+        LEFT JOIN tournament_rounds tr ON tr.course_id = t.id
+        LEFT JOIN courses c ON tr.course_id = c.id WHERE t.id = %s;    
+    '''
     variables = (tid)
     response = db_read(query, variables)
 

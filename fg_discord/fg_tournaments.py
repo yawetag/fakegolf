@@ -41,7 +41,10 @@ class Tournaments(commands.Cog):
         else:
             message = f"Here is a list of tournaments:\n"
             for t in tournaments:
-                message += f"   (#{t['id']}) **{t['tournament_name']}** by {t['player_name']}. {t['rounds']} {'round' if t['rounds']==1 else 'rounds'}.\n"
+                message += f"   (#{t['id']}) **{t['tournament_name']}** by {t['player_name']}. "
+                message += f"{t['rounds']} {'round' if t['rounds']==1 else 'rounds'}. "
+                message += f"{t['status_name']}, closes <t:{t['end_time']}:R> (<t:{t['end_time']}:f> in your timezone)"
+                message += f"\n"
         message += "\nFor more information on a tournament, type `-tournament_info <#>`, where `<#>` is the tournament number."
         message += "\nTo join a tournament, type `-join_tournament <#>` where `<#>` is the tournament number."
 
@@ -61,8 +64,11 @@ class Tournaments(commands.Cog):
             message = "There are no tournaments matching that id. Please type `-tournaments` to see all active tournaments."
         else:
             message = f"Here is information on **{tournament[0]['tournament_name']}** by {tournament[0]['player_name']}:\n"
+            message += f"Description: {tournament[0]['description']}\n"
             for t in tournament:
-                message += f"   Round {t['round']}: **{t['course_name']}** (par: {t['par']}. yards: {t['yardage']:,})\n"
+                message += f"   Round {t['round']}: **{t['course_name']}** "
+                message += f"(par: {t['par']}. yards: {t['yardage']:,}). "
+                message += f"Runs <t:{t['start_time']}:D> to <t:{t['end_time']}:D>.\n"
             message += f"To join the tournament, type `-join_tournament {tournament_id}`"
         await send_channel(ctx, message)
 ###############################################################################
