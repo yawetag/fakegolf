@@ -158,6 +158,16 @@ CREATE TABLE tournament_targets (
     updated_on              TIMESTAMP   NOT NULL DEFAULT NOW() ON UPDATE NOW()
 );
 
+CREATE TABLE tournament_status (
+    id              INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    tournament_id   INT         NOT NULL,
+    user_id         INT         NOT NULL,
+    round           INT         NOT NULL DEFAULT 0,
+    hole            INT         NOT NULL DEFAULT 0,
+    created_on      TIMESTAMP   NOT NULL DEFAULT NOW(),
+    updated_on      TIMESTAMP   NOT NULL DEFAULT NOW() ON UPDATE NOW()
+);
+
 --- Locations Lookup Values
 INSERT INTO locations_lookup (id, location_name, modifier_name, special, icon) VALUES
     (1, "In the hole", NULL, NULL, "hole"),

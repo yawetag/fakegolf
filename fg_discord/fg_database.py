@@ -54,6 +54,20 @@ def get_all_courses():
 ###############################################################################
 
 ##### TOURNAMENTS QUERIES #####################################################
+##### Create ##################################################################
+def add_user_to_tournament(userid, tid):
+    """Adds user to tournament."""
+    query = '''
+        INSERT INTO tournament_status
+        (tournament_id, user_id)
+        VALUES (%s, %s);
+    '''
+    variables = (userid, tid)
+    response = db_create(query, variables)
+
+    return response
+###############################################################################
+
 ##### Read ####################################################################
 def get_all_tournaments():
     """Gets list of all tournaments."""
@@ -75,7 +89,46 @@ def get_tournament_info(tid):
         FROM tournaments t
         LEFT JOIN users u ON t.designer_id = u.id
         LEFT JOIN tournament_rounds tr ON tr.course_id = t.id
-        LEFT JOIN courses c ON tr.course_id = c.id WHERE t.id = %s;    
+        LEFT JOIN courses c ON tr.course_id = c.id
+        WHERE t.id = %s;    
+    '''
+    variables = (tid)
+    response = db_read(query, variables)
+
+    return response
+
+def get_tournament_list_by_user(ctx):
+    """Gets list of tournaments by user."""
+    query = '''
+        SELECT ts.tournament_id
+        FROM tournament_status ts
+        LEFT JOIN users u on ts.user_id = u.id
+        WHERE u.discord_snowflake = %s;
+    '''
+    variables = (ctx.author.id)
+    response = db_read(query, variables)
+
+    return response
+
+def get_tournament_organizer(tid):
+    """Gets the discord id of the tournament organizer."""
+    query = '''
+        SELECT u.discord_snowflake
+        FROM tournaments t
+        LEFT JOIN users u ON t.designer_id = u.id
+        WHERE t.id = %s;
+    '''
+    variables = (tid)
+    response = db_read(query, variables)
+
+    return response
+
+def get_tournament_status(tid):
+    """Gets the tournament status_id of the tournament."""
+    query = '''
+        SELECT status_id
+        FROM tournaments
+        WHERE id = %s;
     '''
     variables = (tid)
     response = db_read(query, variables)
